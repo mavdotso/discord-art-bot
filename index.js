@@ -1,16 +1,13 @@
 import fetch from "node-fetch";
-import { Client } from "discord.js";
-import { GatewayIntentBits } from "discord.js";
-import { EmbedBuilder } from "discord.js";
-import { AttachmentBuilder } from "discord.js"
+import { Client, GatewayIntentBits, EmbedBuilder, AttachmentBuilder } from "discord.js";
 import collections from "./collections.js"
 import generateMaviggle from "./squiggle.js"
-import Canvas  from '@napi-rs/canvas';
+import * as dotenv from 'dotenv'
 
-
+dotenv.config();
 const prefix = "?";
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-const CHANNEL_ID = "879768839582261300";
+const CHANNEL_ID = "879768839582261300"; // GA General server Id
 
 let collectionNames, collectionTokenId, collectionId, collectionContractAddress, pieceId, artistName, randomCollection, randomPiece, collectionIcon, collectionWebsiteSlug, collectionMintedTokens;
 
@@ -35,85 +32,10 @@ client.on("messageCreate", async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   if (message.content === "?maviggle") {
-
-    let canvas = Canvas.createCanvas(800, 800)
-    let context = canvas.getContext('2d');
-
-    let centerX = canvas.width / 2;
-    let centerY = canvas.height / 2;
-    let squiggleStart = 20;
-    let squiggleEnd = canvas.width - 20;
-    let step = canvas.width / 13;
-
-    // Document styles
-    context.lineWidth = 40;
-    context.lineCap = 'round';
-
-    // Gradient setup
-    let gradient = context.createLinearGradient(0, centerY, canvas.width, canvas.height);
-    let gradients = {
-      grad1: ['#c501e1', '#9a26f8', '#6564fe', '#2b97fa', '#02c4e7', '#16e6cc', '#2ef9a0','#67ff6c','#c7e602','#e7c501','#ff6a63','#f82d98','#e830ce'],
-      grad2: ['#ffff66', '#fc6e22', '#ff1493', '#c24cf6'],
-      grad3: ['#08f7fe', '#09fbd3', '#fe53bb', '#f5d300'],
-      grad4: ['#75d5fd', '#b76cfd', '#ff2281', '#011ffd'],
-    }
-
-    let palette = Object.values(gradients)[Math.floor(Math.random() * Object.values(gradients).length)];
-
-    for(let i = 0; i < palette.length; i++) {
-      gradient.addColorStop(i / palette.length, palette[i]);
-    }
-
-    context.strokeStyle = gradient;
-
-    // 🅿ushing 🅿oints v2
-    let squigglePoints = [];
-    let random;
-    let point;
-
-    function pushPoint (point) {
-      squigglePoints.push(point);
-    }
-
-    point = {x: squiggleStart, y: centerY};
-    pushPoint(point);
-
-    for(let i = step; i < canvas.width - step - 1; i+=step) {
-      random = (Math.random() < 0.5 ? -1 : 1) * Math.random() * 150;
-      point = {x: i, y: centerY + random};
-      pushPoint(point);
-    }
-
-    point = {x: squiggleEnd, y: centerY};
-    pushPoint(point);
-
-    // Drawing & smoothing
-    context.moveTo(squigglePoints[0].x, squigglePoints[0].y);
-
-    for(let i = 1; i < squigglePoints.length - 2; i++) {
-      let xc = (squigglePoints[i].x + squigglePoints[i + 1].x) / 2;
-        let yc = (squigglePoints[i].y + squigglePoints[i + 1].y) / 2;
-      context.quadraticCurveTo(squigglePoints[i].x, squigglePoints[i].y, xc, yc);
-    }
-
-    // context.quadraticCurveTo(squigglePoints[i].x, squigglePoints[i].y, squigglePoints[i+1].x, squigglePoints[i+1].y);
-
-    context.stroke();
-
-    const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'maviggle.png' }); 
-
+    const attachment = new AttachmentBuilder(await generateMaviggle(), { name: 'maviggle.png' }); 
     message.channel.send({ files: [attachment] }) 
-
     return;
   }
-
-  // if(message.content === "?art") {
-  //   collectionId = generateRandomCollection();
-  //   pieceId = generateRandomPiece();
-  //   collectionTokenId = generateTokenId(collectionId, pieceId);
-
-  //   fetchAPI(collectionTokenId);
-  // }
 
   const args = message.content.slice(prefix.length).split(/ +/); // Splits the message into two parts
 
@@ -209,7 +131,6 @@ async function fetchAPI(collectionTokenId, message) {
     }
   }
 
-
   const artEmbed = new EmbedBuilder()
     .setColor("Random")
     .setTitle(`${collectionData.name}`)
@@ -236,4 +157,4 @@ async function fetchAPI(collectionTokenId, message) {
   }
 }
 
-client.login("MTAyOTM5NjU5MDY2ODAzMDAyMw.G9lcly.gMekncmPs0K9seJXMglyfTt00w98RQfpr6AsSg");
+client.login(process.env.DISCORD_TOKEN_ID);

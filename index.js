@@ -37,6 +37,11 @@ client.on("messageCreate", async (message) => {
     return;
   }
 
+  if (message.content === "?values") {
+    message.channel.send("**GEN.ART Values:** \n\n**Accountability** - We hold one another accountable for the subsequent values in our words, commitments, and actions. \n**Inclusion** - We foster an inclusive environment in which sharing ideas on creation, curation, and appreciation moves the generative art space forward. \n**Innovation** - We push the boundaries of what is possible. \n**Stewardship** - We maintain relationships beyond the mint process and endeavor to be stewards for each artist's journey thereafter. \n**Transparency** - We uphold transparency in our decision-making, objectives, and processes.");
+    return;
+  }
+
   const args = message.content.slice(prefix.length).split(/ +/); // Splits the message into two parts
 
   collectionNames = args.shift().toLowerCase(); // Returns collection name in lower case

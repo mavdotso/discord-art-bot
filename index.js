@@ -17,13 +17,13 @@ client.on("ready", () => {
   client.user.setActivity("(🎨, 👨‍💻)");
 
   // Sending random artwork every X msec
-  setInterval(() => {
-    collectionId = generateRandomCollection();
-    pieceId = generateRandomPiece();
-    collectionTokenId = generateTokenId(collectionId, pieceId);
+  // setInterval(() => {
+  //   collectionId = generateRandomCollection();
+  //   pieceId = generateRandomPiece();
+  //   collectionTokenId = generateTokenId(collectionId, pieceId);
 
-    fetchAPI(collectionTokenId);
-  }, 2000 * 60 * 60);
+  //   fetchAPI(collectionTokenId);
+  // }, 2000 * 60 * 60);
 });
 
 // Send message as a response
@@ -151,8 +151,7 @@ async function fetchAPI(collectionTokenId, message) {
       { name: "\u200B", value: "\u200B", inline: true }
     )
     .setImage(`${collectionData.image}`)
-    .setFooter({ text: `Released on GEN.ART`, iconURL: `${collectionIcon}` });
-
+    
   if (message == undefined) {
     // If not passing a specific channel
     let messageChannel = client.channels.cache.get(CHANNEL_ID); // Get a pre-defined channel ID

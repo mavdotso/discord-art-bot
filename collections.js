@@ -215,6 +215,31 @@ let collections = [
         collectionWebsiteSlug: "rorschach-meadow",
         collectionMintedTokens: 63,
     },
+    {
+        collectionNames: [
+            { alias: "Mutual" },
+            { alias: "mutual" },
+        ],
+        collectionArtist: "Moodsoup",
+        collectionId: 30003,
+        collectionContractAddress: "0x9fac9986941eeee1112cfb1870bc6952d136e97e",
+        collectionIcon: "https://gen-art-public.s3.amazonaws.com/Mutual_1a8af51f6d.png",
+        collectionWebsiteSlug: "mutual",
+        collectionMintedTokens: 300,
+    },
+    {
+        collectionNames: [
+            { alias: "SOBEL" },
+            { alias: "sobel" },
+            { alias: "Sobel" },
+        ],
+        collectionArtist: "itsgalo",
+        collectionId: 30004,
+        collectionContractAddress: "0x603Efd5b941022Ad759E9B8eb40b890062746b46",
+        collectionIcon: "https://gen-art-public.s3.amazonaws.com/sobel_e3c2cf3821.png",
+        collectionWebsiteSlug: "sobel",
+        collectionMintedTokens: 41,
+    },
 ];
 
 export default collections;
